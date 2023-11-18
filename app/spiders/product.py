@@ -59,7 +59,7 @@ class Product:
 
         # Safely access keys in product["tempModel"]
         temp_model = product.get("tempModel", {})
-        print(temp_model)
+        print(f'temp_model: {temp_model}')
         result['title'] = temp_model.get("offerTitle")
         result["companyName"] = temp_model.get("companyName")
         result["unit"] = temp_model.get("offerUnit")
@@ -68,6 +68,8 @@ class Product:
 
         # Safely access keys in product["orderParamModel"]
         order_param_model = product.get("orderParamModel", {})
+        print(f'order_param_model: {order_param_model}')
+
         result["order"] = order_param_model.get("orderParam")
 
         result["sku"] = product.get("skuModel")
