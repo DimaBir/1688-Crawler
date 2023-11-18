@@ -7,3 +7,5 @@ python-dotenv==1.0.0
 redis==4.6.0
 requests==2.31.0
 WTForms==3.0.1
+googletrans==4.0.0-rc1
+forex-python

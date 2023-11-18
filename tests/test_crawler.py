@@ -1,5 +1,36 @@
 import pytest
+
 import json
+import csv
+from googletrans import Translator, LANGUAGES
+from forex_python.converter import CurrencyRates
+
+def translate(text, target_language='ru'):
+    translator = Translator()
+    return translator.translate(text, dest=target_language).text
+
+def convert_currency(amount, from_currency, to_currency):
+    c = CurrencyRates()
+    return c.convert(from_currency, to_currency, amount)
+
+def convert_json_to_csv(json_file, csv_file, item_url):
+    # Load JSON data
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+
+    # Translate and convert currency
+    data['title'] = translate(data['title'], target_language='ru')
+    # Repeat for other fields as necessary
+
+    # Convert price (assuming conversion rate is available)
+    price_in_yuan = float(data['order']['skuParam']['skuRangePrices'][0]['price'])
+    price_in_rubles = convert_currency(price_in_yuan, 'CNY', 'RUB')
+
+    # Write to CSV
+    with open(csv_file, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['URL', 'Title', 'Price (Yuan)', 'Price (Rubles)'])
+        writer.writerow([item_url, data['title'], price_in_yuan, price_in_rubles])
 
 
 @pytest.mark.fast
@@ -46,6 +77,8 @@ def test_crawl_product(client):
     # Save JSON data to a file
     with open(f'json_data_{id}.json', 'w') as file:
         json.dump(json_data, file, indent=4)
+
+    convert_json_to_csv(f'json_data_{id}.json', f'output_{id}.csv', url)
 
     # Continue with your assertions
     assert 'title' in json_data
