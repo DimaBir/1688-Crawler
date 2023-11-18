@@ -1,6 +1,5 @@
 import pytest
 
-import openai
 import json
 import csv
 from googletrans import Translator, LANGUAGES
