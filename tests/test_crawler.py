@@ -42,13 +42,13 @@ def test_crawl_categories(client):
     rv = client.get('/crawlers/categories', query_string=dict(url=url))
     json_data = rv.get_json()
 
-    # Assertions
-    assert len(json_data['data']) > 0
-    assert 'ywlingpan' == json_data['shop']['id']
-
     # Save JSON data to a file
     with open('json_data_categories.json', 'w') as file:
         json.dump(json_data, file, indent=4)
+
+    # Assertions
+    assert len(json_data['data']) > 0
+    assert 'ywlingpan' == json_data['shop']['id']
 
     # Convert JSON to CSV and save
     convert_json_to_csv('json_data_categories.json', 'output_categories.csv', url)
