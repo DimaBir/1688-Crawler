@@ -51,7 +51,12 @@ class Categories:
         return categories
 
     def __extract_shop_info(self, tree):
-        shop_url_element = tree.xpath('//div[contains(@class, "base-info")]//a')[0]
+        shop_url_elements = tree.xpath('//div[contains(@class, "base-info")]//a')
+        if not shop_url_elements:
+            print('Error has occured')
+            return None  # Or an appropriate default value or action
+
+        shop_url_element = shop_url_elements[0]
         shop_url = shop_url_element.get('href')
         id = re.findall('https?://(.+)\.1688', shop_url)[0]
         title_element = shop_url_element.xpath('//div[@class="company-name"]')[0]
