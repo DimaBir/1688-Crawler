@@ -59,6 +59,7 @@ class Product:
 
         # Safely access keys in product["tempModel"]
         temp_model = product.get("tempModel", {})
+        print(temp_model)
         result['title'] = temp_model.get("offerTitle")
         result["companyName"] = temp_model.get("companyName")
         result["unit"] = temp_model.get("offerUnit")
