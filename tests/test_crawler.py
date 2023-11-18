@@ -5,13 +5,16 @@ import csv
 from googletrans import Translator, LANGUAGES
 from forex_python.converter import CurrencyRates
 
+
 def translate(text, target_language='ru'):
     translator = Translator()
     return translator.translate(text, dest=target_language).text
 
+
 def convert_currency(amount, from_currency, to_currency):
     c = CurrencyRates()
     return c.convert(from_currency, to_currency, amount)
+
 
 def convert_json_to_csv(json_file, csv_file, item_url):
     # Load JSON data
@@ -24,13 +27,13 @@ def convert_json_to_csv(json_file, csv_file, item_url):
 
     # Convert price (assuming conversion rate is available)
     price_in_yuan = float(data['order']['skuParam']['skuRangePrices'][0]['price'])
-    price_in_rubles = convert_currency(price_in_yuan, 'CNY', 'RUB')
+    price_in_usd = convert_currency(price_in_yuan, 'CNY', 'USD')
 
     # Write to CSV
     with open(csv_file, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
-        writer.writerow(['URL', 'Title', 'Price (Yuan)', 'Price (Rubles)'])
-        writer.writerow([item_url, data['title'], price_in_yuan, price_in_rubles])
+        writer.writerow(['URL', 'Title', 'Price (Yuan)', 'Price ($)'])
+        writer.writerow([item_url, data['title'], price_in_yuan, price_in_usd])
 
 
 @pytest.mark.fast
