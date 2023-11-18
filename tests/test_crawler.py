@@ -1,4 +1,5 @@
 import pytest
+import json
 
 
 @pytest.mark.fast
@@ -37,12 +38,19 @@ def test_crawl_products_with_exception(client):
 
 @pytest.mark.fast
 def test_crawl_product(client):
-    id = '545211706397'
+    id = '648864072369'
     url = 'https://detail.1688.com/offer/' + id + '.html'
     rv = client.get('/crawlers/product', query_string=dict(url=url))
     json_data = rv.get_json()
+
+    # Save JSON data to a file
+    with open(f'json_data_{id}.json', 'w') as file:
+        json.dump(json_data, file, indent=4)
+
+    # Continue with your assertions
     assert 'title' in json_data
     assert id == json_data['offerid']
+
 
 
 @pytest.mark.product

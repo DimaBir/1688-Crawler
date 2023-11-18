@@ -56,11 +56,20 @@ class Product:
 
         product = self.__extract_base_and_sku(tree)
         result = dict()
-        result['title'] = product["tempModel"]["offerTitle"]
-        result["companyName"] = product["tempModel"]["companyName"]
-        result["unit"] = product["tempModel"]["offerUnit"]
+
+        # Safely access keys in product["tempModel"]
+        temp_model = product.get("tempModel", {})
+        result['title'] = temp_model.get("offerTitle")
+        result["companyName"] = temp_model.get("companyName")
+        result["unit"] = temp_model.get("offerUnit")
+
         result['images'] = self.__extract_images(product)
-        result["order"] = product["orderParamModel"]["orderParam"]
-        result["sku"] = product["skuModel"]
-        # todo 商品属性 商品描述
+
+        # Safely access keys in product["orderParamModel"]
+        order_param_model = product.get("orderParamModel", {})
+        result["order"] = order_param_model.get("orderParam")
+
+        result["sku"] = product.get("skuModel")
+
         return result
+
