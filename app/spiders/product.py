@@ -55,6 +55,7 @@ class Product:
         tree = html.fromstring(content)
 
         product = self.__extract_base_and_sku(tree)
+        print(f'product {product}')
         result = dict()
 
         # Safely access keys in product["tempModel"]
